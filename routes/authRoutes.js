@@ -43,13 +43,26 @@ router.post('/login', async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) return res.status(401).json({ message: 'Invalid email or password' });
 
-    const token = jwt.sign({ email: user.email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    res.json({ token });
+    const token = jwt.sign(
+      { id: user._id, email: user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
+    );
+
+    // ✅ Respond with token and user info
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        email: user.email,
+      },
+    });
   } catch (err) {
     console.error('❌ Login error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 
 // ✅ Account update endpoint
 router.put('/update', authMiddleware, async (req, res) => {
