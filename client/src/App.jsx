@@ -11,11 +11,14 @@ import Register from './pages/Register.jsx';
 
 const App = () => {
   const location = useLocation();
-  const hideSidebarAndLogout = location.pathname === "/login"; // rename to clarify
+  const hideSidebarAndLogout = location.pathname === "/login";
+
+  // ✅ Read admin name from localStorage (fallback to "Admin" if not set)
+  const adminName = localStorage.getItem("adminName") ;
 
   return (
     <div className="flex h-screen">
-      {!hideSidebarAndLogout && <Sidebar />} {/* ✅ Hide sidebar on login */}
+      {!hideSidebarAndLogout && <Sidebar />}
 
       <div className="flex-1 bg-gray-100 overflow-y-auto flex flex-col">
         <header className="flex justify-between items-center bg-white px-6 py-4 border-b shadow">
@@ -26,9 +29,9 @@ const App = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            {localStorage.getItem('adminEmail') && (
+            {localStorage.getItem('token') && (
               <span className="text-sm text-gray-600 hidden sm:inline">
-                Logged in as: <strong>{localStorage.getItem('adminEmail')}</strong>
+                Logged in as: <strong>{adminName}</strong>
               </span>
             )}
             {!hideSidebarAndLogout && <LogoutButton />}

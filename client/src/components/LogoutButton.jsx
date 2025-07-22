@@ -4,10 +4,15 @@ const LogoutButton = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");          // ✅ clear token
-    localStorage.removeItem("adminEmail");     // ✅ clear admin email
-    navigate("/login");                        // ✅ redirect to login page
-    window.location.reload();                  // ✅ force reload so header updates
+    // ✅ Clear all admin session data
+    localStorage.removeItem("token");
+    localStorage.removeItem("adminName");
+    
+    // ✅ Navigate to login page
+    navigate("/login");
+
+    // ✅ Force reload to ensure header/sidebar updates
+    window.location.reload();
   };
 
   return (
@@ -21,6 +26,7 @@ const LogoutButton = () => {
 };
 
 export default LogoutButton;
+
 
 // import { useNavigate } from "react-router-dom";
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // ✅ import Link here
-import { login } from '../api/authApi'; // ✅ your login API function
+import { useNavigate, Link } from 'react-router-dom';
+import { login } from '../api/authApi';
 import { toast } from 'react-toastify';
 
 const Login = () => {
@@ -8,36 +8,24 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const { token } = await login(email, password); // ✅ call your login API
-  //     localStorage.setItem('token', token); // ✅ store token in localStorage
-  //     toast.success('Login successful!');
-  //     navigate('/members'); // ✅ redirect after login
-  //   } catch (error) {
-  //     console.error('❌ Login error:', error);
-  //     toast.error(error?.response?.data?.message || 'Login failed.');
-  //   }
-  // };
-const handleSubmit = async (e) => {
-  e.preventDefault();
-  try {
-    const response = await login(email, password); // returns token + user
-    console.log("🔎 Login response:", response);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const { token, user } = await login(email, password);
+console.log("user.name:", user.name)
+      // ✅ Store token and name
+      localStorage.setItem("token", token);
+      localStorage.setItem("adminName", user.name);
 
-    const { token, user } = response; // guaranteed to exist after successful login
+      console.log("✅ Login response:", { token, user });
 
-    localStorage.setItem('token', token);
-    localStorage.setItem('adminEmail', user.email);
-
-    toast.success(`Welcome, ${user.email}!`);
-    navigate('/members');
-  } catch (error) {
-    console.error('❌ Login error:', error);
-    toast.error(error?.response?.data?.message || 'Login failed.');
-  }
-};
+      toast.success(`Welcome, ${user.name}!`);
+      navigate('/members');
+    } catch (error) {
+      console.error('❌ Login error:', error);
+      toast.error(error?.response?.data?.message || 'Login failed.');
+    }
+  };
 
   return (
     <div className="max-w-md mx-auto mt-20 bg-white p-8 rounded shadow">
