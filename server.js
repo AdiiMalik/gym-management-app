@@ -51,8 +51,8 @@ app.use(cors({
 app.use(express.json());
 
 // Updated Routes - removed '/api' prefix to match frontend
-app.use('/members', memberRoutes);
-app.use('/auth', authRoutes);
+app.use('/api/members', memberRoutes);
+app.use('/api/auth', authRoutes);
 
 // Enhanced MongoDB connection
 mongoose.connect(process.env.MONGO_URI)
