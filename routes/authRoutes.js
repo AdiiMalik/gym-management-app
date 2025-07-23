@@ -16,7 +16,11 @@ router.post('/register', async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ message: 'All fields are required' });
     }
-
+    if (password.length < 6) {
+      return res.status(400).json({
+        message: 'Password must be at least 6 characters'
+      });
+    }
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists' });
@@ -38,7 +42,7 @@ router.post('/register', async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: '1h' }
     );
-console.log('✅ Logged-in user from DB:', newUser);
+    console.log('✅ Logged-in user from DB:', newUser);
     res.status(201).json({
       message: 'User registered successfully',
       token,
@@ -49,8 +53,8 @@ console.log('✅ Logged-in user from DB:', newUser);
       },
     });
   } catch (err) {
-  console.error('❌ Registration error:', err); // log the full error object
-  res.status(500).json({ message: 'Server error during registration', error: err.message });
+    console.error('❌ Registration error:', err); // log the full error object
+    res.status(500).json({ message: 'Server error during registration', error: err.message });
   }
 });
 
