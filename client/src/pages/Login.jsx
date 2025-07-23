@@ -11,34 +11,64 @@ const Login = () => {
   const navigate = useNavigate();
   const { login: authLogin } = useAuth(); // Using useAuth
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   setIsLoading(true);
 
-    try {
-      const { token, user } = await login(email, password);
-      authLogin({ token, user });
+  //   try {
+  //     const { token, user } = await login(email, password);
+  //     authLogin({ token, user });
       
-      toast.success(`Welcome back, ${user.name}!`, {
-        icon: '👋',
-      });
-      navigate('/members');
-    } catch (error) {
-      let errorMessage = 'Login failed. Please try again.';
+  //     toast.success(`Welcome back, ${user.name}!`, {
+  //       icon: '👋',
+  //     });
+  //     navigate('/members');
+  //   } catch (error) {
+  //     let errorMessage = 'Login failed. Please try again.';
       
-      if (error.response) {
-        errorMessage = error.response.data.message || errorMessage;
-      } else if (error.message) {
-        errorMessage = error.message;
+  //     if (error.response) {
+  //       errorMessage = error.response.data.message || errorMessage;
+  //     } else if (error.message) {
+  //       errorMessage = error.message;
+  //     }
+      
+  //     toast.error(errorMessage);
+  //     console.error('Login error:', error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  setIsLoading(true);
+
+  try {
+    const { token, user } = await login(email, password);
+    authLogin({ token, user });
+    navigate('/members');
+  } catch (error) {
+    let errorMessage = 'Login failed';
+    
+    if (error.response) {
+      // Backend returned an error
+      errorMessage = error.response.data?.message || 
+                    `Server error (${error.response.status})`;
+      
+      // Special handling for 500 errors
+      if (error.response.status === 500) {
+        errorMessage = 'Server error - please try again later';
+        console.error('Backend 500 error details:', error.response.data);
       }
-      
-      toast.error(errorMessage);
-      console.error('Login error:', error);
-    } finally {
-      setIsLoading(false);
+    } else if (error.message) {
+      errorMessage = error.message;
     }
-  };
 
+    toast.error(errorMessage);
+    console.error('Login error details:', error);
+  } finally {
+    setIsLoading(false);
+  }
+};
   return (
     <div className="max-w-md mx-auto mt-20 bg-white p-8 rounded-lg shadow-md">
       <h1 className="text-2xl font-bold mb-6 text-center text-gray-800">Login</h1>

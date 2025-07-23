@@ -4,8 +4,8 @@
 // import App from './App.jsx';
 // import { BrowserRouter } from 'react-router-dom';
 // import './index.css' ; // Tailwind CSS
-// import { ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+//import { ToastContainer } from 'react-toastify';
+//import 'react-toastify/dist/ReactToastify.css';
 // import { AuthProvider } from './context/AuthContext';
 
 // ReactDOM.createRoot(document.getElementById('root')).render(
@@ -15,7 +15,7 @@
 //    <AuthProvider>
 //       <App />
 //       </AuthProvider>
-//        <ToastContainer position="top-right" autoClose={3000} />
+ //       <ToastContainer position="top-right" autoClose={3000} />
 //     </BrowserRouter>
 //   </React.StrictMode>
 // );
